@@ -43,21 +43,19 @@ app.post('/heartbeat', function(req, res) {
     pg.connect(process.env.DATABASE_URL, function(err, conn, done) {
         // watch for any connect issues
         if (err) console.log(err);
-        conn.query(
-            conn.query('INSERT INTO salesforce.heartbeat__c (device_id__c, heartbeat__c) VALUES ($1, $2)', [req.body.device_id.trim(), req.body.heartbeat.trim()],
-                function(err, result) {
-                    done();
-                    if (err) {
-                        res.status(400).json({
-                            error: err.message
-                        });
-                    } else {
-                        // this will still cause jquery to display 'Record updated!'
-                        // eventhough it was inserted
-                        res.json(result);
-                    }
+        conn.query('INSERT INTO salesforce.heartbeat__c (device_id__c, heartbeat__c) VALUES ($1, $2)', [req.body.device_id.trim(), req.body.heartbeat.trim()],
+            function(err, result) {
+                done();
+                if (err) {
+                    res.status(400).json({
+                        error: err.message
+                    });
+                } else {
+                    // this will still cause jquery to display 'Record updated!'
+                    // eventhough it was inserted
+                    res.json(result);
                 }
-            );
+            }
         );
     });
 });
