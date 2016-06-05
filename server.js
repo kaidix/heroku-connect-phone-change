@@ -41,6 +41,7 @@ app.post('/update', function(req, res) {
 
 app.post('/heartbeat', function(req, res) {
     pg.connect(process.env.DATABASE_URL, function(err, conn, done) {
+        console.log(req)
         // watch for any connect issues
         if (err) console.log(err);
         conn.query('INSERT INTO salesforce.heartbeat__c (device_id__c, heartbeat__c) VALUES ($1, $2)', [req.body.device_id.trim(), req.body.heartbeat.trim()],
